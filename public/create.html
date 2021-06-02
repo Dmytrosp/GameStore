@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Create</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrapper">
+        <a
+          href="index.html"
+          class="brand-logo"
+          style="margin-left: 10px"
+          >Create Rival</a
+        >
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="create.html">Create</a></li>
+          <li><a href="change.html">Change</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="row" style="margin-top: 30px">
+      <div
+        class="container"
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        "
+      >
+        <div class="input-field col s6" style="margin-left: 0">
+          <input
+            placeholder="Insert here license header(longer then 8 symbols)"
+            id="header"
+            min="4"
+            type="text"
+            class="validate"
+            required
+          />
+          <label for="first_name">License Header</label>
+        </div>
+        <div class="input-field col s6" style="margin-left: 0">
+          <input
+            placeholder="Insert here license price(from 1 to 50)"
+            id="price"
+            min="1"
+            type="number"
+            class="validate"
+            required
+          />
+          <label for="first_name">License Price</label>
+        </div>
+        <div class="input-field col s6" style="margin-left: 0">
+          <textarea
+            id="textarea1"
+            class="materialize-textarea"
+            required
+          ></textarea>
+          <label for="textarea1">License Text(to 500 symbols)</label>
+        </div>
+        <button
+          class="btn waves-effect waves-light"
+          type="submit"
+          name="action"
+          onclick="sendLicense()"
+        >
+          Submit
+          <i class="material-icons right"></i>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const sendLicense = async () => {
+        try {
+          const header = document.getElementById('header').value;
+          const text = document.getElementById('textarea1').value;
+          const price = document.getElementById('price').value;
+          if (!header || !text || !price) {
+            alert('some field is empty');
+            return false;
+          }
+          const res = await axios({
+            method: 'POST',
+            url: '/licenses',
+            data: {
+              header,
+              text,
+              price,
+            },
+          })
+            .then((result) => {
+              console.log(result);
+              alert('success');
+            })
+            .catch((e) => alert('Bad values'));
+          return false;
+        } catch (err) {
+          alert(err);
+          return false;
+        }
+      };
+    </script>
+  </body>
+</html>

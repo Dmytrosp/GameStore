@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <title>Start page</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrapper">
+        <a
+          href="index.html"
+          class="brand-logo"
+          style="margin-left: 10px"
+          >All Licence</a
+        >
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="create.html">Create</a></li>
+          <li><a href="change.html">Change</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div
+      class="licenses row"
+      id="licenses"
+      style="display: flex; justify-content: center; flex-wrap: wrap"
+    ></div>
+
+    <script>
+      const getLicenses = async () => {
+        try {
+          const res = await axios({
+            method: 'GET',
+            url: '/licenses',
+          })
+            .then((result) => {
+              const docLicenses = document.getElementById('licenses');
+              const licenses = result.data.data.data;
+              for (i of licenses) {
+                docLicenses.innerHTML += `<div
+				class="col s12 m3"
+				style="margin-left: 0; width: 50%; max-width: 300px"
+			>
+				<div
+					class="card-panel teal"
+					style="display: flex; flex-direction: column; align-items: center"
+				>
+					<span
+						class="white-text"
+						style="font-family: Roboto; margin-bottom: 10px; font-size: 22px"
+						>Header: ${i.header}</span
+					>
+
+					<span
+						class="white-text"
+						style="font-family: Roboto; font-size: 18px; margin-bottom: 10px"
+						>Text of License: ${i.text ?? ''}
+					</span>
+          	<span
+						class="white-text"
+						style="font-family: Roboto; font-size: 18px;margin-bottom: 18px 
+						>License Price: ${i.price}
+					</span>
+          <span
+						class="white-text"
+						style="font-family: Roboto; font-size: 18px; font-weight: 300"
+						>Created At: ${new Date(i.createdAt).toDateString()}</span>
+					</span>
+          <span
+						class="white-text"
+						style="font-family: Roboto; font-size: 18px; font-weight: 300"
+						>Id: ${i._id}
+					</span>
+				</div>
+			</div>`;
+              }
+            })
+            .catch((e) => alert(e));
+          return false;
+        } catch (err) {
+          alert(err);
+          return false;
+        }
+      };
+      getLicenses();
+    </script>
+  </body>
+</html>
